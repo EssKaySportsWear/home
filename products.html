@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EssKay Sportswear</title>
+  <title>Products - EssKay Sportswear</title>
   <script type="module" src="firebase.js"></script>
   <script type="module" src="app.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
       --border-strong: rgba(123, 231, 255, 0.18);
       --text: #f8fbff;
       --muted: #aab4c2;
---muted-strong: #D2C4B4;
+      --muted-strong: #D2C4B4;
       --accent: #7be7ff;
       --accent-strong: #96fff0;
       --shadow: 0 25px 80px rgba(0, 0, 0, 0.45);
@@ -41,8 +41,6 @@
       background: #F3E3D0;
       min-height: 100vh;
     }
-
-    /* .glass removed as per request */
 
     .site-nav {
       position: relative;
@@ -132,13 +130,15 @@
 
     <div class="nav-links">
       <a class="nav-link" href="index.html"><img src="https://cdn-icons-png.flaticon.com/512/1946/1946488.png" alt="Home" style="width:20px;height:20px;margin-right:4px;">Home</a>
-      <a class="nav-link" href="products.html"><img src="https://cdn-icons-png.flaticon.com/512/4804/4804045.png" alt="Products" style="width:20px;height:20px;margin-right:4px;">Products</a>
+      <a class="nav-link active" href="products.html"><img src="https://cdn-icons-png.flaticon.com/512/4804/4804045.png" alt="Products" style="width:20px;height:20px;margin-right:4px;">Products</a>
       <a class="nav-link" href="cart.html"><img src="https://static.vecteezy.com/system/resources/previews/019/787/018/non_2x/shopping-cart-icon-shopping-basket-on-transparent-background-free-png.png" alt="Cart" style="width:20px;height:20px;margin-right:4px;">Cart</a>
       <a class="nav-link" href="login.html"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkbpugr3eQwxV_gINbKOZE_RKL3_pbvoTiuQ&s" alt="Login" style="width:20px;height:20px;margin-right:4px;">SignUp/Login</a>
     </div>
   </nav>
 
   <div id="mainContent">
+    <h1>Products Page</h1>
+    <p>Browse our sportswear collection. Products will be loaded dynamically via app.js.</p>
   </div>
 </body>
 </html>
