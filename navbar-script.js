@@ -8,10 +8,11 @@ function isMobile() {
 }
 
 function moveIndicator(el) {
-  if (!indicator) return;
+  if (!indicator || !el) return;
   
   const rect = el.getBoundingClientRect();
   const container = isMobile() ? document.body : navbar;
+  if (!container) return;
   const containerRect = container.getBoundingClientRect();
   
   if (isMobile()) {
@@ -40,12 +41,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (activeItem) moveIndicator(activeItem);
 });
 
-// Listen for active changes (triggered by navbar-complete.js)
+// Listen for active changes
 const observer = new MutationObserver(() => {
   const activeItem = document.querySelector('.nav-link.active');
   if (activeItem) moveIndicator(activeItem);
 });
-navItems.forEach(item => observer.observe(item, { attributes: true, attributeFilter: ['class'] }));
+
+if (navItems.length > 0) {
+  navItems.forEach(item => observer.observe(item, { attributes: true, attributeFilter: ['class'] }));
+}
 
 // Resize and mobile open/close handler
 window.addEventListener('resize', () => {

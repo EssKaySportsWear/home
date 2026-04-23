@@ -11,7 +11,8 @@ const firebaseConfig = {
   projectId: "esskaysportsdata",
   storageBucket: "esskaysportsdata.firebasestorage.app",
   messagingSenderId: "734706027382",
-  appId: "1:734706027382:web:bb9bc72eec36e2eed94857"
+  appId: "1:734706027382:web:bb9bc72eec36e2eed94857",
+  databaseURL: "https://esskaysportsdata-default-rtdb.firebaseio.com/"
 };
 
 // Initialize Firebase

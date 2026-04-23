@@ -431,20 +431,21 @@
           <label>Email Address</label>
           <input type="email" id="loginEmail" required placeholder="Enter your email">
         </div>
-        <div class="input-group">
-          <label>Password</label>
-          <div class="password-wrapper">
-            <input type="password" id="loginPassword" required placeholder="Enter password">
-            <button type="button" class="toggle-password" onclick="togglePwd('loginPassword', this)">
-              <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="eye-open"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-              <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="eye-closed" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-            </button>
+          <div id="loginPasswordGroup">
+            <label>Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="loginPassword" required placeholder="Enter password">
+              <button type="button" class="toggle-password" onclick="togglePwd('loginPassword', this)">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="eye-open"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="eye-closed" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              </button>
+            </div>
+            <div style="text-align: right; margin-top: 4px;">
+              <button type="button" id="showForgotPwd" style="font-size: 12px; color: #72a5b8; text-decoration: none; font-weight: 600; background: none; border: none; cursor: pointer; padding: 0;">Forgot Password?</button>
+            </div>
           </div>
+          <p id="google-detect-msg-login" style="color: #2e7d32; font-size: 14px; margin: 10px 0; display: none; font-weight: 600; text-align: center;">This account is SignedUp from google</p>
           <p id="loginError" style="color: #ff4d4d; font-size: 13px; margin: 4px 0 0 0; display: none; font-weight: 600;"></p>
-          <div style="text-align: right; margin-top: 4px;">
-            <button type="button" id="showForgotPwd" style="font-size: 12px; color: #72a5b8; text-decoration: none; font-weight: 600; background: none; border: none; cursor: pointer; padding: 0;">Forgot Password?</button>
-          </div>
-        </div>
         <button type="submit" class="auth-btn" id="loginBtn">Log In</button>
       </form>
       <div class="divider"><span>OR</span></div>
@@ -484,7 +485,7 @@
           <label>Email</label>
           <input type="email" id="signupEmail" required placeholder="john@example.com">
         </div>
-        <div class="input-group" id="signupPasswordGroup">
+        <div class="input-group" id="signupPasswordWrapper">
           <label>Password</label>
           <div class="password-wrapper">
             <input type="password" id="signupPassword" required placeholder="Create password">
@@ -493,11 +494,9 @@
               <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="eye-closed" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
             </button>
           </div>
-          <p id="signupError" style="color: #ff4d4d; font-size: 13px; margin: 4px 0 0 0; display: none; font-weight: 600;"></p>
         </div>
-        <div class="input-group">
-          <label>Phone Number</label>
-          <input type="tel" id="signupPhone" required placeholder="+91 9876543210 (include country code)">
+        <p id="google-detect-msg-signup" style="color: #ff9800; font-size: 14px; margin: 10px 0; display: none; font-weight: 600; text-align: center;">This account is already signed in from google</p>
+        <p id="signupError" style="color: #ff4d4d; font-size: 13px; margin: 4px 0 0 0; display: none; font-weight: 600;"></p>
         </div>
 
         <button type="submit" class="auth-btn" id="signupBtn">Sign Up</button>

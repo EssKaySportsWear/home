@@ -1,37 +1,33 @@
 # FIREBASE SETUP GUIDE
 
-Please complete these steps in your Firebase Console to make the authentication work correctly:
+### 1. Database URL Debug
+- I have added the Database URL to the error message.
+- If you see "No account found... DB: Default", it means the `databaseURL` in `firebase.js` is NOT being picked up.
+- If you see "DB: https://...", verify that this URL is EXACTLY the same as the one in your Firebase Console.
 
-### 1. Enable Authentication Providers
-- Go to **Authentication** > **Sign-in method**.
-- Enable **Email/Password**.
-- Enable **Google** (if you want Google login).
+### 2. Check Database Structure
+- Your data MUST look exactly like this in the Firebase Console:
+  ```
+  esskaysportsdata-default-rtdb
+   └── users
+        └── xyz123 (This must be the UID)
+             ├── email: "user@gmail.com"
+             └── name: "User Name"
+  ```
+- If your users are NOT inside a folder named `users`, or if the ID is NOT the UID, the login will fail.
 
-### 2. Configure Realtime Database Rules (CRITICAL)
-- Go to **Realtime Database** > **Rules**.
-- Paste these rules to allow email checking and protect user data:
+### 3. Rules Reminder
+- Use these rules:
 ```json
 {
   "rules": {
-    "users": {
-      ".indexOn": ["email"],
-      ".read": "auth != null",
-      "$uid": {
-        ".read": "$uid === auth.uid",
-        ".write": "$uid === auth.uid"
-      }
-    }
+    ".read": "auth != null",
+    ".write": "auth != null"
   }
 }
 ```
+*(Try these "Open" rules temporarily just to test if permissions are the issue. If it works, we will lock it down later).*
 
-### 3. Check Email Templates
-- Go to **Authentication** > **Templates**.
-- Ensure **Email verification** and **Password reset** are enabled and the "From" name/email are correct.
-
-### 4. Enable Local Testing
-- Go to **Authentication** > **Settings** > **Authorized domains**.
-- Ensure `localhost` is added.
-
-### 5. Deployment Note
-- Always run your project using a local server (like Live Server) or the auth features will be blocked by the browser.
+### 4. Deployment Note
+- **Ctrl + F5** to hard refresh.
+- Check the console (F12) for any "Permission Denied" errors.
