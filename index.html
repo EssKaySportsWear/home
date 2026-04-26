@@ -1362,6 +1362,9 @@
       const maxP = parseFloat(document.getElementById('max-price').value) || Infinity;
 
       let filtered = allProducts.filter(p => {
+        // Hide products with quantity less than 5
+        if (p.qtyType === 'fixed' && parseInt(p.quantity) < 5) return false;
+        
         const matchesSearch = p.name.toLowerCase().includes(searchTerm) || p.category.toLowerCase().includes(searchTerm);
         const matchesFabric = fabF === 'all' || p.fabric === fabF;
         const matchesNeck = neckF === 'all' || p.neck === neckF;

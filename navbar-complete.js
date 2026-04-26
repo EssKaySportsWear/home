@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const href = link.getAttribute('href');
       link.classList.remove('active');
       
-      if (href === currentPage || (href.includes('#') && currentPage === href.split('#')[0] && currentHash === '#' + href.split('#')[1])) {
+      if (href && (href === currentPage || (href.includes('#') && currentPage === href.split('#')[0] && currentHash === '#' + href.split('#')[1])))) {
         link.classList.add('active');
       }
     });
@@ -46,7 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (rect.top < 150 && rect.bottom > 150) {
           navItems.forEach(link => {
             link.classList.remove('active');
-            if (link.getAttribute('href').includes('#products-section')) link.classList.add('active');
+            const linkHref = link.getAttribute('href');
+            if (linkHref && linkHref.includes('#products-section')) link.classList.add('active');
           });
         }
       }
@@ -144,27 +145,32 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── Auth Swap Logic ──────────────────────────────────────────
+  const ADMIN_EMAIL = 'business.esskaysportswear@gmail.com';
+
   function initAuthSwap(user) {
-    const authBtn = document.querySelector('.auth-nav-btn');
-    const userBtn = document.querySelector('.user-nav-btn');
-    const userName = document.getElementById('nav-username');
+    const authBtns = document.querySelectorAll('.auth-nav-btn');
+    const userBtns = document.querySelectorAll('.user-nav-btn');
+    const userNames = document.querySelectorAll('#nav-username');
+    const adminLinks = document.querySelectorAll('#nav-admin-link');
 
     if (user) {
-      if (authBtn) authBtn.style.display = 'none';
-      if (userBtn) {
-        userBtn.style.display = 'inline-flex';
-        // Handle both button and a tag variations
-        const nameSpan = userBtn.querySelector('#nav-username') || userName;
+      authBtns.forEach(btn => btn.style.display = 'none');
+      userBtns.forEach(btn => {
+        btn.style.display = 'inline-flex';
+        const nameSpan = btn.querySelector('#nav-username');
         if (nameSpan) nameSpan.innerText = user.displayName || user.email.split('@')[0];
         
-        // If it's a button (on home page), add click to logout or profile
-        userBtn.onclick = () => {
+        btn.onclick = () => {
           if (confirm('Do you want to logout?')) auth.signOut();
         };
-      }
+      });
+      adminLinks.forEach(link => {
+        link.style.display = user.email === ADMIN_EMAIL ? 'inline-flex' : 'none';
+      });
     } else {
-      if (authBtn) authBtn.style.display = 'inline-flex';
-      if (userBtn) userBtn.style.display = 'none';
+      authBtns.forEach(btn => btn.style.display = 'inline-flex');
+      userBtns.forEach(btn => btn.style.display = 'none');
+      adminLinks.forEach(link => link.style.display = 'none');
     }
   }
 

@@ -137,8 +137,9 @@
       <a class="nav-link" href="index.html#products-section"><img class="nav-icon" src="productsn.png" data-normal="productsn.png" data-active="productsf.png" alt="Products" style="width:20px;height:20px;margin-right:8px;">Products</a>
       <a class="nav-link active" href="cart.html"><img class="nav-icon" src="cartn.png" data-normal="cartn.png" data-active="cartf.png" alt="Cart" style="width:20px;height:20px;margin-right:8px;">Cart</a>
       <a class="nav-link" href="orders.html"><img class="nav-icon" src="cartn.png" data-normal="cartn.png" data-active="cartf.png" alt="Orders" style="width:20px;height:20px;margin-right:8px;">My Orders</a>
-      <a class="nav-link auth-nav-btn" href="login.html"><img class="nav-icon" src="accn.png" data-normal="accn.png" data-active="accf.png" alt="Login/SignUp" style="width:20px;height:20px;margin-right:8px;">Login/SignUp</a>
-      <button class="nav-link user-nav-btn" id="nav-user-btn" style="display: none;"><img class="nav-icon" src="accn.png" data-normal="accn.png" data-active="accf.png" alt="User" style="width:20px;height:20px;margin-right:8px;"><span id="nav-username">User</span></button>
+      <a class="nav-link auth-nav-btn" href="login.html"><img class="nav-icon" src="accn.png" data-normal="accn.png" data-active="accf.png" style="width:20px;height:20px;margin-right:8px;">Login/SignUp</a>
+      <button class="nav-link user-nav-btn" id="nav-user-btn" style="display: none;"><img class="nav-icon" src="accn.png" data-normal="accn.png" data-active="accf.png" style="width:20px;height:20px;margin-right:8px;"><span id="nav-username">User</span></button>
+      <a class="nav-link admin-nav-btn" href="admin.html" id="nav-admin-link" style="display: none;"><img class="nav-icon" src="accn.png" data-normal="accn.png" data-active="accf.png" alt="Admin" style="width:20px;height:20px;margin-right:8px;">Admin</a>
     </div>
   </nav>
 
@@ -282,7 +283,7 @@
             userEmail: auth.currentUser.email,
             items: items,
             totalAmount: total.toFixed(2),
-            status: 'Confirmed',
+            status: 'Pending',
             timestamp: Date.now()
           };
 

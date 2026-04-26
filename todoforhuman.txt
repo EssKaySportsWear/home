@@ -1,24 +1,20 @@
-# EssKay Sportswear - Important Instructions for Human
+# EssKay Sportswear - Firebase Rules
 
-## 1. Firebase Rules Update (CRITICAL)
-Your current rules might be blocking the Admin Panel from loading the user list. Please update your Firebase Realtime Database rules to the following:
+## IMPORTANT: Copy ONLY the JSON below (lines between the ``` markers) into Firebase Console → Realtime Database → Rules → Paste → Publish
 
 ```json
 {
   "rules": {
     "users": {
-      // Allow the admin to see the full list of users
       ".read": "root.child('users').child(auth.uid).child('email').val() === 'business.esskaysportswear@gmail.com'",
       "$uid": {
-        // Allow users to see their own profile
         ".read": "$uid === auth.uid",
-        // Allow users to edit their own profile OR admin to manage it
         ".write": "$uid === auth.uid || root.child('users').child(auth.uid).child('email').val() === 'business.esskaysportswear@gmail.com'"
       }
     },
     "products": {
-      ".read": "true",
-      ".write": "root.child('users').child(auth.uid).child('email').val() === 'business.esskaysportswear@gmail.com'"
+      ".read": true,
+      ".write": "auth != null"
     },
     "carts": {
       "$uid": {
@@ -27,43 +23,34 @@ Your current rules might be blocking the Admin Panel from loading the user list.
       }
     },
     "customOrders": {
-      ".indexOn": ["userId"],
-      // Allow admin to see all custom orders
-      ".read": "root.child('users').child(auth.uid).child('email').val() === 'business.esskaysportswear@gmail.com'",
-      "$orderId": {
-        ".write": "auth != null",
-        ".read": "data.child('userId').val() === auth.uid || root.child('users').child(auth.uid).child('email').val() === 'business.esskaysportswear@gmail.com'"
-      }
+      ".indexOn": ["userId", "price", "status"],
+      ".read": "auth != null",
+      ".write": "auth != null"
     },
     "standardOrders": {
       ".indexOn": ["userId"],
-      // Allow admin to see all standard orders
-      ".read": "root.child('users').child(auth.uid).child('email').val() === 'business.esskaysportswear@gmail.com'",
-      "$orderId": {
-        ".write": "auth != null",
-        ".read": "data.child('userId').val() === auth.uid || root.child('users').child(auth.uid).child('email').val() === 'business.esskaysportswear@gmail.com'"
-      }
-    },
-    "orders": {
-      // Allow admin to see all orders
-      ".read": "root.child('users').child(auth.uid).child('email').val() === 'business.esskaysportswear@gmail.com'",
-      "$orderId": {
-        ".write": "auth != null",
-        ".read": "data.child('userId').val() === auth.uid || root.child('users').child(auth.uid).child('email').val() === 'business.esskaysportswear@gmail.com'"
-      }
+      ".read": "auth != null",
+      ".write": "auth != null"
     }
   }
 }
 ```
 
-## 2. Why "Error showing users" happens?
-This error occurs because the Admin Panel is trying to fetch the entire list of users from the `users` folder in your database. If the security rules (above) are not set to allow the admin (`business.esskaysportswear@gmail.com`) to read the parent folder, Firebase will block the request.
+## What each rule does
 
-## 3. Admin Panel Tips
-- **Reset Password**: This sends an official Firebase email to the user.
-- **Disable User**: Setting a user to "Disabled" will prevent them from adding items to their cart or placing orders (if you implement the check on the frontend).
-- **Edit Products**: Remember to fill in the **Category** and check the **Discount** box if you want to show strikethrough pricing.
+| Node | Read | Write | Why |
+|------|------|-------|-----|
+| users | Admin only (list all) | Own profile + Admin | auth.js creates profile on signup, admin manages users |
+| users/$uid | Own profile | Own profile + Admin | auth.js reads own profile, admin edits/deletes |
+| products | Everyone | Any logged-in user | Product listing is public; checkout decrements stock |
+| carts/$uid | Own cart only | Own cart only | Each user manages their own cart |
+| customOrders | Any logged-in user | Any logged-in user | orders.html queries by userId; index enables the query |
+| standardOrders | Any logged-in user | Any logged-in user | orders.html queries by userId; index enables the query |
 
-## 4. Assets
-- Make sure icons like `homen.png`, `productsn.png`, `cartn.png` are in the root folder.
-- Cloudinary preset `esskay_unsigned` must be active.
+## Database paths used in code
+
+- **auth.js**: `users/{uid}` — read/write own profile
+- **index.html**: `products` (read), `carts/{uid}` (read/write), `customOrders` (push)
+- **cart.html**: `carts/{uid}` (read/write/delete), `standardOrders` (push), `products/{id}` (read + write quantity)
+- **orders.html**: `customOrders` (query by userId), `standardOrders` (query by userId), cancel = delete order
+- **admin.html**: `users` (read all), `customOrders` (read all, update price/status), `products` (CRUD)

@@ -708,7 +708,10 @@
           if (isNaN(price)) return showToast('Enter a valid price', 'error');
           
           const toast = showToast('Saving price...', 'loading');
-          await update(ref(rtdb, `customOrders/${id}`), { price: price });
+          await update(ref(rtdb, `customOrders/${id}`), { 
+            price: price,
+            lastUpdated: Date.now()
+          });
           updateToast(toast, 'Price saved!', 'success');
         };
       });
@@ -940,11 +943,15 @@
       list.innerHTML = '';
       Object.keys(productsData).reverse().forEach(id => {
         const prod = productsData[id];
+        const qtyType = prod.qtyType || 'unlimited';
+        const qty = parseInt(prod.quantity) || 0;
+        const isOutOfStock = qtyType === 'fixed' && qty <= 0;
+        
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>
             <div style="display:flex; align-items:center; gap:10px;">
-              <img src="${prod.media?.[0]?.url || ''}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
+              <img src="${prod.media?.[0]?.url || ''}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;${isOutOfStock ? 'opacity:0.5;' : ''}">
               <strong>${prod.name}</strong>
             </div>
           </td>
@@ -956,8 +963,11 @@
             ₹${prod.price}
             ${prod.discountPrice ? `<br><span style="font-size:10px; color:red; text-decoration:line-through;">₹${prod.price}</span> <strong>₹${prod.discountPrice}</strong>` : ''}
           </td>
-          <td>${prod.quantity}</td>
           <td>
+            ${qtyType === 'unlimited' ? '<span style="color:green;">∞ Unlimited</span>' : `<span style="${isOutOfStock ? 'color:red;' : 'font-weight:600;'}">${qty} remaining</span>`}
+          </td>
+          <td>
+            ${qtyType === 'fixed' ? `<button class="action-btn restock-btn" data-id="${id}" style="padding:4px 8px; font-size:11px; margin-right:4px;">Restock</button>` : ''}
             <button class="action-btn btn-delete delete-prod" data-id="${id}">Delete</button>
           </td>
         `;
@@ -1018,6 +1028,16 @@
             showToast('Deleting...', 'loading');
             await remove(ref(rtdb, 'products/' + id));
             showToast('Deleted', 'success');
+            loadProducts();
+          }
+        }
+
+        if (btn.classList.contains('restock-btn')) {
+          const newQty = await showPrompt('Enter quantity to add:', '', 'Restock Product');
+          if (newQty && !isNaN(parseInt(newQty))) {
+            const currentQty = parseInt(prod.quantity) || 0;
+            await update(ref(rtdb, 'products/' + id), { quantity: currentQty + parseInt(newQty) });
+            showToast('Restocked!', 'success');
             loadProducts();
           }
         }

@@ -90,8 +90,10 @@
       letter-spacing: 1px;
     }
     .status-pending { background: #fffae6; color: #d4a017; }
-    .status-processing { background: #e6f7ff; color: #1890ff; }
+    .status-confirmed { background: #e6f7ff; color: #1890ff; }
+    .status-processing { background: #f0f0ff; color: #722ed1; }
     .status-shipped { background: #f6ffed; color: #52c41a; }
+    .status-delivered { background: #e6fffb; color: #13c2c2; }
 
     .order-items { border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px; }
     .item-row { display: flex; gap: 16px; margin-bottom: 12px; align-items: center; }
@@ -111,6 +113,7 @@
       <a class="nav-link active" href="orders.html"><img class="nav-icon" src="cartn.png" data-normal="cartn.png" data-active="cartf.png" style="width:20px;height:20px;margin-right:8px;">My Orders</a>
       <a class="nav-link auth-nav-btn" href="login.html"><img class="nav-icon" src="accn.png" data-normal="accn.png" data-active="accf.png" style="width:20px;height:20px;margin-right:8px;">Login/SignUp</a>
       <button class="nav-link user-nav-btn" id="nav-user-btn" style="display: none;"><img class="nav-icon" src="accn.png" data-normal="accn.png" data-active="accf.png" style="width:20px;height:20px;margin-right:8px;"><span id="nav-username">User</span></button>
+      <a class="nav-link admin-nav-btn" href="admin.html" id="nav-admin-link" style="display: none;"><img class="nav-icon" src="accn.png" data-normal="accn.png" data-active="accf.png" style="width:20px;height:20px;margin-right:8px;">Admin</a>
     </div>
   </nav>
 
@@ -123,7 +126,7 @@
 
   <script type="module">
     import { auth, rtdb } from './firebase.js';
-    import { ref, onValue, query, orderByChild, equalTo } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js';
+    import { ref, onValue, remove, query, orderByChild, equalTo } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js';
     import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js';
 
     onAuthStateChanged(auth, (user) => {
@@ -184,8 +187,8 @@
 
         list.innerHTML = sortedOrders.map(order => {
           const isPending = (order.status || 'Pending').toLowerCase() === 'pending';
-          const price = order.price || order.totalAmount || 0;
-          const total = parseFloat(price) * 1.05;
+          const price = parseFloat(order.price || order.totalAmount || 0);
+          const total = price * 1.05;
 
           return `
             <div class="order-card">
@@ -207,7 +210,7 @@
                     </div>
                   </div>
                 ` : `
-                  ${order.items.map(item => `
+                  ${(order.items || []).map(item => `
                     <div class="item-row">
                       <div style="font-weight:700;">${item.name} (x${item.quantity})</div>
                     </div>
